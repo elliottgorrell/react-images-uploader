@@ -20,7 +20,7 @@ export default class ImagesUploader extends Component {
 	input: ?HTMLInputElement;
 
 	static propTypes = {
-		url: PropTypes.string.isRequired,
+		url: PropTypes.string,
 		dataName: PropTypes.string,
 		headers: PropTypes.object,
 		classNamespace: PropTypes.string,
@@ -28,6 +28,7 @@ export default class ImagesUploader extends Component {
 		label: PropTypes.string,
 		images: PropTypes.array,
 		disabled: PropTypes.bool,
+		onChange: PropTypes.func,
 		onLoadStart: PropTypes.func,
 		onLoadEnd: PropTypes.func,
 		deleteImage: PropTypes.func,
@@ -395,7 +396,7 @@ export default class ImagesUploader extends Component {
 		e.preventDefault();
 
 		const filesList = e.target.files;
-		const { onLoadStart, onLoadEnd, url, optimisticPreviews, multiple } = this.props;
+		const { onLoadStart, onLoadEnd, url, onChange, optimisticPreviews, multiple } = this.props;
 
 		if (onLoadStart && typeof onLoadStart === 'function') {
 			onLoadStart();
@@ -431,6 +432,7 @@ export default class ImagesUploader extends Component {
 						this.setState({
 							optimisticPreviews: [upload.target.result],
 						});
+						if (onChange) onChange(upload.target.result);
 					} else {
 						const prevOptimisticPreviews = this.state.optimisticPreviews;
 						this.setState({
@@ -460,6 +462,10 @@ export default class ImagesUploader extends Component {
 		if (url) {
 			this.loadImages(filesList, url, onLoadEnd);
 		}
+		
+		this.setState({
+			loadState: 'success',
+		});
 	}
 
 	@autobind

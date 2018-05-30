@@ -338,9 +338,9 @@ export default class ImagesUploader extends Component {
 					if (response instanceof Array || typeof response === 'string') {
 						let imagePreviewUrls = [];
 						if (multiple === false) {
-							imagePreviewUrls = response instanceof Array ? response : [response];
+							imagePreviewUrls = response instanceof Array ? `https://res.cloudinary.com/ashmemories/image/upload/c_fill,h_100,w_100/${response}` : [`https://res.cloudinary.com/ashmemories/image/upload/c_fill,h_100,w_100/${response}`];
 						} else {
-							imagePreviewUrls = this.state.imagePreviewUrls.concat(response);
+							imagePreviewUrls = this.state.imagePreviewUrls.concat(`https://res.cloudinary.com/ashmemories/image/upload/c_fill,h_100,w_100/${response}`);
 						}
 						this.setState({
 							imagePreviewUrls,
